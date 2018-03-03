@@ -12,4 +12,18 @@
         android:layout_height="wrap_content"
         android:text="Capture Picture" />
 
+    <Button
+        android:id="@+id/selectPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Photo"
+        app:layout_constraintTop_toBottomOf="@id/capturePicButton"/>
+
+    <!--<ImageView-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/selectPhoto"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"/>-->
 </android.support.constraint.ConstraintLayout>
