@@ -7,10 +7,10 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Path;
 
 /**
  * Created by greatkiller on 2/17/2018.
@@ -18,6 +18,9 @@ import retrofit2.http.Path;
  */
 
 public interface BackendService {
+    @POST("/authenticate")
+    Call<ResponseBody> authenticate(@Header("google_id_token") String idToken);
+
     @Multipart
     @POST("/uploadImage")
     Call<ResponseBody> uploadImage(@Part MultipartBody.Part file);
