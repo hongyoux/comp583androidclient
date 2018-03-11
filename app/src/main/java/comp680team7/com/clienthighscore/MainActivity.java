@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.http.HttpTransport;
@@ -38,12 +39,6 @@ import java.util.List;
 import java.util.Locale;
 
 import comp680team7.com.clienthighscore.service.BackendService;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -142,25 +137,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            File file = new File(currentPhotoPath);
-            if(file.exists()) {
-                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-                MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
-
-                Call call = SERVICE.uploadImage(body);
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onResponse(Call call, Response response) {
-                        System.out.println("SUCCESS!!");
-                    }
-
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-                        t.printStackTrace();
-                        System.out.println("FAILURE!!");
-                    }
-                });
-            }
+            processImageData(Uri.fromFile(new File(currentPhotoPath)));
+//            File file = new File(currentPhotoPath);
+//            if(file.exists()) {
+//                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+//                MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+//
+//                Call call = SERVICE.uploadImage(body);
+//                call.enqueue(new Callback() {
+//                    @Override
+//                    public void onResponse(Call call, Response response) {
+//                        System.out.println("SUCCESS!!");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call call, Throwable t) {
+//                        t.printStackTrace();
+//                        System.out.println("FAILURE!!");
+//                    }
+//                });
+//            }
         } else if(requestCode == REQUEST_IMAGE_SELECTION && resultCode == RESULT_OK) {
             processImageData(data.getData());
         }
@@ -182,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendToCloudVision(final Bitmap bitmap) {
         new AsyncTask<Object, Void, Void>(){
+            StringBuffer sb = new StringBuffer();
+
             @Override
             protected Void doInBackground(Object... objects) {
 
@@ -232,11 +230,15 @@ public class MainActivity extends AppCompatActivity {
                 labelDetection.setType("LABEL_DETECTION");
                 labelDetection.setMaxResults(10);
 
+//                Feature textDetection = new Feature();
+//                textDetection.setType("TEXT_DETECTION");
+
 //                Feature cropHint = new Feature();
 //                cropHint.setType("CROP_HINTS");
 
 
                 featureList.add(labelDetection);
+//                featureList.add(textDetection);
 //                featureList.add(cropHint);
 
                 annotateImageRequest.setFeatures(featureList);
@@ -251,18 +253,34 @@ public class MainActivity extends AppCompatActivity {
                     annotate.setDisableGZipContent(true);
 
                     BatchAnnotateImagesResponse response = annotate.execute();
-                    System.out.println(convertResponseToString(response));
+//                    List<EntityAnnotation> textAnnotations = response.getResponses().get(0).getTextAnnotations();
+//                    if(textAnnotations != null) {
+//                        for(int i = 0; i < textAnnotations.size(); i++) {
+//                            sb.append(textAnnotations.get(i).getDescription()).append("\n");
+//                        }
+//                    }
+                    System.out.println(convertResponseToString(response,sb));
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 return null;
             }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if(sb.length() == 0) {
+                    ((TextView)findViewById(R.id.textView)).setText("NOTHING FOUND");
+                } else {
+                    ((TextView)findViewById(R.id.textView)).setText("FOUND \n" + sb.toString());
+                }
+            }
         }.execute();
     }
 
-    private String convertResponseToString(BatchAnnotateImagesResponse response) {
-        String message = "I found these things:\n\n";
+    private String convertResponseToString(BatchAnnotateImagesResponse response, StringBuffer sb) {
+        String message = "";
 
 //        System.out.println(response.getResponses().get(0).getCropHintsAnnotation().getCropHints().get(0).getBoundingPoly());
 //        System.out.println(response.getResponses().get(0).getCropHintsAnnotation().getCropHints().get(0).getConfidence());
@@ -276,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             message += "nothing";
         }
-
+        sb.append(message);
         return message;
     }
 

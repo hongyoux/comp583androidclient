@@ -8,17 +8,35 @@
 
     <Button
         android:id="@+id/capturePicButton"
-        android:layout_width="match_parent"
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:text="Capture Picture" />
+        android:text="Capture Picture"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp" />
 
     <Button
         android:id="@+id/selectPhoto"
-        android:layout_width="match_parent"
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
         android:text="Select Photo"
-        app:layout_constraintTop_toBottomOf="@id/capturePicButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/capturePicButton"
+        tools:layout_editor_absoluteX="8dp" />
 
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectPhoto">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" />
+    </ScrollView>
     <!--<ImageView-->
         <!--android:id="@+id/imageView"-->
         <!--android:layout_width="match_parent"-->
