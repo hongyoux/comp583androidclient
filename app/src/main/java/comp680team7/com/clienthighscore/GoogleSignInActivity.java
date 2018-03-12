@@ -18,18 +18,10 @@ import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 
-import comp680team7.com.clienthighscore.R;
-import comp680team7.com.clienthighscore.service.BackendService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-import comp680team7.com.clienthighscore.MainActivity;
-
-public class    GoogleSignInActivity extends AppCompatActivity implements
+public class GoogleSignInActivity extends AppCompatActivity implements
 View.OnClickListener {
 
     private static final String TAG = "SignInActivity";
@@ -63,7 +55,6 @@ View.OnClickListener {
         signInButton.setColorScheme(SignInButton.COLOR_AUTO);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-
     }
 
     @Override
@@ -123,7 +114,7 @@ View.OnClickListener {
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
 
-            Intent signInToMain = new Intent(this, MainActivity.class);
+            Intent signInToMain = new Intent(this, GameListActivity.class);
             startActivity(signInToMain);
         } else {
 
