@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">ClientHighScore</string>
     <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
-    <string name="server_client_id">748827521810-jo9ad9o7brpjmhdb1h7movd6m865c3f5.apps.googleusercontent.com</string>
+    <string name="server_client_id">ADD_KEY</string>
 </resources>

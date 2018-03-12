@@ -55,6 +55,13 @@ View.OnClickListener {
         signInButton.setColorScheme(SignInButton.COLOR_AUTO);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.goToMain).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(GoogleSignInActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -96,9 +103,9 @@ View.OnClickListener {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String idToken = account.getIdToken();
 
-            //TODO: send ID token to server to validate
-            Call<ResponseBody> attemptAuth = MainActivity.SERVICE.authenticate(idToken);
-            attemptAuth.execute().body();
+//            //TODO: send ID token to server to validate
+//            Call<ResponseBody> attemptAuth = MainActivity.SERVICE.authenticate(idToken);
+//            attemptAuth.execute().body();
 
             updateUI(account);
         } catch (ApiException e) {
@@ -106,8 +113,6 @@ View.OnClickListener {
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
