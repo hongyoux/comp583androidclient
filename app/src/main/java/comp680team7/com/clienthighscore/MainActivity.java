@@ -35,7 +35,9 @@ import com.google.api.services.vision.v1.model.ImageContext;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static Integer REQUEST_IMAGE_CAPTURE = 1;
     public static Integer REQUEST_IMAGE_SELECTION = 2;
+
+    public static Integer CAMERA_PERMISSION = 2000;
+    public static Integer READ_EXTERNAL_STORAGE_PERMISSION = 2001;
 
     public static BackendService SERVICE;
     static {
@@ -95,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 2000);
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION);
                 } else {
                     startCamera();
                 }
@@ -105,7 +110,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.selectPhoto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startGalleryChooser();
+                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_PERMISSION);
+                } else {
+                    startGalleryChooser();
+                }
             }
         });
     }
@@ -135,8 +144,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == 2000) {
+        if(requestCode == CAMERA_PERMISSION) {
             startCamera();
+        }
+        else if(requestCode == READ_EXTERNAL_STORAGE_PERMISSION) {
+            startGalleryChooser();
         }
     }
 
@@ -164,35 +176,69 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
 //            processImageData(Uri.fromFile(new File(currentPhotoPath)));
             File file = new File(currentPhotoPath);
             if(file.exists()) {
-                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-                MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
-
-                Call call = SERVICE.uploadImage(body);
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onResponse(Call call, Response response) {
-                        System.out.println("SUCCESS!!");
-                        try {
-                            System.out.println(((ResponseBody) response.body()).string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-                        t.printStackTrace();
-                        System.out.println("FAILURE!!");
-                    }
-                });
+                createRequestAndUpload(file);
             }
-        } else if(requestCode == REQUEST_IMAGE_SELECTION && resultCode == RESULT_OK) {
-            processImageData(data.getData());
+        } else if(requestCode == REQUEST_IMAGE_SELECTION && resultCode == RESULT_OK && data != null) {
+            Uri uri= data.getData();
+            try {
+                byte[] bytes = readBytes(uri);
+                createRequestAndUpload(bytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    public byte[] readBytes(Uri uri) throws IOException {
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
+    private void createRequestAndUpload(byte[] bytes) {
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), bytes);// also works with "application/octet-stream"
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", "dummy.jpg", reqFile);
+
+        uploadToBucket(body);
+    }
+
+    private void createRequestAndUpload(File file) {
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+
+        uploadToBucket(body);
+    }
+
+    private void uploadToBucket(MultipartBody.Part body) {
+        Call call = SERVICE.uploadImage(body);
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                System.out.println("SUCCESS!!");
+                try {
+                    System.out.println(((ResponseBody) response.body()).string());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                t.printStackTrace();
+                System.out.println("FAILURE!!");
+            }
+        });
     }
 
     private void processImageData(Uri uri) {

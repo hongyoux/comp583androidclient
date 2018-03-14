@@ -27,15 +27,6 @@ View.OnClickListener {
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
-//    public static BackendService SERVICE;
-//    static {
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("localhost:8080")
-//                .build();
-//
-//        SERVICE = retrofit.create(BackendService.class);
-//    }
-
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
