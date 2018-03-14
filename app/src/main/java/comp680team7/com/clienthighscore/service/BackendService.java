@@ -18,7 +18,7 @@ import retrofit2.http.Part;
  */
 
 public interface BackendService {
-    @POST("/authenticate")
+    @POST("/auth")
     Call<ResponseBody> authenticate(@Header("google_id_token") String idToken);
 
     @Multipart

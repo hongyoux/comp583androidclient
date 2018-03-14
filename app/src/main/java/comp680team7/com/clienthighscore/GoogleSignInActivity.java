@@ -20,6 +20,8 @@ import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GoogleSignInActivity extends AppCompatActivity implements
 View.OnClickListener {
@@ -95,8 +97,19 @@ View.OnClickListener {
             String idToken = account.getIdToken();
 
 //            //TODO: send ID token to server to validate
-//            Call<ResponseBody> attemptAuth = MainActivity.SERVICE.authenticate(idToken);
-//            attemptAuth.execute().body();
+            Call<ResponseBody> attemptAuth = MainActivity.SERVICE.authenticate(idToken);
+            attemptAuth.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    System.out.println("SUCCESS!!");
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    t.printStackTrace();
+                    System.out.println("FAILURE!!");
+                }
+            });
 
             updateUI(account);
         } catch (ApiException e) {
