@@ -96,9 +96,8 @@ View.OnClickListener {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             String idToken = account.getIdToken();
 
-//            //TODO: send ID token to server to validate
-            Call<ResponseBody> attemptAuth = MainActivity.SERVICE.authenticate(idToken);
-            attemptAuth.enqueue(new Callback() {
+            Call attemptAuth = MainActivity.SERVICE.authenticate(idToken);
+            attemptAuth.enqueue(new Callback() {// correct?
                 @Override
                 public void onResponse(Call call, Response response) {
                     System.out.println("SUCCESS!!");
