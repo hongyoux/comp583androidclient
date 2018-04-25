@@ -19,11 +19,21 @@ import comp680team7.com.clienthighscore.models.Game;
 public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameViewHolder> {
     private List<Game> games = new ArrayList<>();
 
+    private OnListItemSelectedListener selectionListener;
+
+    public GameListAdapter(OnListItemSelectedListener selectionListener) {
+        this.selectionListener = selectionListener;
+    }
+
     public void addGames(List<Game> games) {
+        this.games.clear();
         this.games.addAll(games);
         notifyDataSetChanged();
     }
 
+    public Game getGameAt(int index) {
+        return games.get(index);
+    }
 
     @Override
     public GameListAdapter.GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,7 +60,12 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
 
         public GameViewHolder(View itemView) {
             super(itemView);
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectionListener.onGameSelected(getAdapterPosition());
+                }
+            });
             gameTitle = itemView.findViewById(R.id.gameTitle);
             gamePublisher = itemView.findViewById(R.id.gamePublisher);
             gameReleaseDate = itemView.findViewById(R.id.releaseDate);

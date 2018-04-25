@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ClientHighScore.iml" filepath="$PROJECT_DIR$/ClientHighScore.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\greatkiller\AndroidStudioProjects\test\ClientHighScore\comp680androidclient.iml" filepath="C:\Users\greatkiller\AndroidStudioProjects\test\ClientHighScore\comp680androidclient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/comp680androidclient.iml" filepath="$PROJECT_DIR$/comp680androidclient.iml" />
     </modules>
   </component>
 </project>
