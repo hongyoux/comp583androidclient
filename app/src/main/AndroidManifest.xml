@@ -2,14 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="comp680team7.com.clienthighscore">
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -37,7 +38,10 @@
                 <!--<category android:name="android.intent.category.DEFAULT" />-->
                 <!--</intent-filter>-->
         </activity>
-        <activity android:name=".GameListActivity"/>
+
+        <activity android:name=".GameListActivity"
+            />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="comp680team7.com.clienthighscore.fileprovider"

@@ -1,5 +1,6 @@
 package comp680team7.com.clienthighscore.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import comp680team7.com.clienthighscore.models.Game;
@@ -26,5 +27,5 @@ public interface BackendService {
     Call<ResponseBody> uploadImage(@Part MultipartBody.Part file);
 
     @GET("/games")
-    Call<List<Game>> getGames();
+    Call<ArrayList<Game>> getGames();
 }
