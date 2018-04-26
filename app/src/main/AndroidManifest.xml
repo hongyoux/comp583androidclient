@@ -38,8 +38,10 @@
                 <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".GameListActivity"
-            />
+        <activity android:name=".GameListActivity" />
+
+        <activity android:name=".GameCreateActivity"
+            android:label="Create Game"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -7,5 +7,4 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="game_list_fragment_title">Available games</string>
 
-    <string name="game_list_fragment_arg">mGameList</string>
 </resources>

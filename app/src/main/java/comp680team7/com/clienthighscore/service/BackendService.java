@@ -1,7 +1,6 @@
 package comp680team7.com.clienthighscore.service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import comp680team7.com.clienthighscore.models.Game;
 import okhttp3.MultipartBody;
@@ -12,6 +11,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * Created by greatkiller on 2/17/2018.
@@ -28,4 +28,11 @@ public interface BackendService {
 
     @GET("/games")
     Call<ArrayList<Game>> getGames();
+
+    @POST("/games")
+    Call<ResponseBody> addGame(
+            @Query("name") String name,
+            @Query("publisher") String publisher,
+            @Query("releaseDate") Long releaseDate
+            );
 }
