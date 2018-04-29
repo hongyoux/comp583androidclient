@@ -1,4 +1,4 @@
-package comp680team7.com.clienthighscore;
+package comp680team7.com.clienthighscore.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,11 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import comp680team7.com.clienthighscore.OnListItemSelectedListener;
+import comp680team7.com.clienthighscore.R;
 import comp680team7.com.clienthighscore.models.Game;
-
-/**
- * Created by greatkiller on 3/11/2018.
- */
 
 public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameViewHolder> {
     private List<Game> games = new ArrayList<>();
@@ -63,7 +61,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectionListener.onGameSelected(getAdapterPosition());
+                    selectionListener.onItemSelected(getAdapterPosition());
                 }
             });
             gameTitle = itemView.findViewById(R.id.gameTitle);

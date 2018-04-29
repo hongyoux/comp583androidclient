@@ -11,5 +11,5 @@ package comp680team7.com.clienthighscore;
  * >Communicating with Other Fragments</a> for more information.
  */
 public interface OnListItemSelectedListener {
-    void onGameSelected(int position);
+    void onItemSelected(int position);
 }
