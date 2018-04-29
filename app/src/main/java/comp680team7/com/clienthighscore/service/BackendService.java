@@ -1,6 +1,7 @@
 package comp680team7.com.clienthighscore.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import comp680team7.com.clienthighscore.models.Game;
 import comp680team7.com.clienthighscore.models.Score;
@@ -27,6 +28,9 @@ public interface BackendService {
     @GET("/games")
     Call<ArrayList<Game>> getGames();
 
+    @GET("/user")
+    Call<List<User>> getUsers();
+
     @GET("/score")
     Call<ArrayList<Score>> getScores(@Query("gameId") Integer gameId);
 
@@ -41,6 +45,7 @@ public interface BackendService {
     Call<ResponseBody> addScore(
             @Query("gameId") Integer gameId,
             @Query("userId") Integer userId,
-            @Query("score") Integer score
+            @Query("score") Integer score,
+            @Query("imageUrl") String imageUrl
     );
 }

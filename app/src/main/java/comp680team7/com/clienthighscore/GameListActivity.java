@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,8 +15,6 @@ import android.view.View;
 import java.util.ArrayList;
 
 import comp680team7.com.clienthighscore.adapters.GameListAdapter;
-import comp680team7.com.clienthighscore.fragments.GameListFragment;
-import comp680team7.com.clienthighscore.ScoreListActivity;
 import comp680team7.com.clienthighscore.models.Game;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +35,7 @@ public class GameListActivity extends AppCompatActivity implements OnListItemSel
 
         final GameListAdapter adapter = new GameListAdapter(this);
         gameListView.setAdapter(adapter);
+        gameListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         gameListView.setLayoutManager(new LinearLayoutManager(this));
 
         findViewById(R.id.newGameFAB).setOnClickListener(new View.OnClickListener() {

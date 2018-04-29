@@ -41,8 +41,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import comp680team7.com.clienthighscore.models.User;
 import comp680team7.com.clienthighscore.service.BackendService;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public static Integer READ_EXTERNAL_STORAGE_PERMISSION = 2001;
 
     public static User CURRENT_ACTIVE_USER;
+    public static Map<Integer, User> CACHE_USERS = new HashMap<>();
 
     public static BackendService SERVICE;
     static {

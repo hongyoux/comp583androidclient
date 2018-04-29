@@ -31,9 +31,6 @@ class GoogleSignInActivity : AppCompatActivity(), View.OnClickListener {
             lastSignedInAccount.idToken?.let {
                 authenticateWithBackend(it)
             }
-            updateUI(lastSignedInAccount)
-            finish()
-            return
         }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -89,7 +86,28 @@ class GoogleSignInActivity : AppCompatActivity(), View.OnClickListener {
                 println("SUCCESS!!")
                 response?.let {
                     if(response.isSuccessful) {
-                        MainActivity.CURRENT_ACTIVE_USER = response.body()
+                        if(response.body() != null) {
+                            MainActivity.CURRENT_ACTIVE_USER = response.body()
+                            val users = MainActivity.SERVICE.users
+                            users.enqueue(object : Callback<List<User>> {
+                                override fun onFailure(call: Call<List<User>>?, t: Throwable?) {
+
+                                }
+
+                                override fun onResponse(call: Call<List<User>>?, response: Response<List<User>>?) {
+                                    response?.let {
+                                        if(it.isSuccessful) {
+                                            MainActivity.CACHE_USERS.clear()
+                                            it.body()?.forEach({
+                                                MainActivity.CACHE_USERS[it.id] = it
+                                            })
+                                        }
+                                    }
+                                }
+                            })
+                            updateUI(GoogleSignIn.getLastSignedInAccount(this@GoogleSignInActivity))
+                            finish()
+                        }
                     }
                 }
             }
@@ -104,8 +122,6 @@ class GoogleSignInActivity : AppCompatActivity(), View.OnClickListener {
             idToken?.let {
                 authenticateWithBackend(idToken)
             }
-
-            updateUI(account)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

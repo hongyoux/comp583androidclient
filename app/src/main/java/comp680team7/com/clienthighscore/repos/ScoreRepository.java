@@ -1,12 +1,13 @@
 package comp680team7.com.clienthighscore.repos;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import comp680team7.com.clienthighscore.MainActivity;
 import comp680team7.com.clienthighscore.models.Score;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -14,16 +15,19 @@ import retrofit2.Response;
 //@Singleton
 public class ScoreRepository {
 //    private BackendService backendService;
+    private MutableLiveData<List<Score>> scoreListLiveData = new MutableLiveData<>();
 
-    public static MutableLiveData<ArrayList<Score>> getScore(Integer gameId) {
-        final MutableLiveData<ArrayList<Score>> data = new MutableLiveData<>();
-//        data.setValue(getDummyScoreList()); //JUS FOR TEST. TODO: REMOVE
+    public LiveData<List<Score>> getScoreListLiveData() {
+        return scoreListLiveData;
+    }
+
+    public void getScoreList(Integer gameId) {
         Call<ArrayList<Score>> scores = MainActivity.SERVICE.getScores(gameId);
         scores.enqueue(new Callback<ArrayList<Score>>() {
             @Override
             public void onResponse(Call<ArrayList<Score>> call, Response<ArrayList<Score>> response) {
                 if (response.isSuccessful()) {
-                    data.setValue(response.body());
+                    scoreListLiveData.postValue(response.body());
                 }
             }
 
@@ -33,27 +37,24 @@ public class ScoreRepository {
             }
 
         });
-
-        return data;
     }
 
-    public static void addScore(Integer gameId, Integer userId, Integer score) {
-
-        Call<ResponseBody> call = MainActivity.SERVICE.addScore(gameId, userId, score);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.isSuccessful()) {
-                    //TODO:something
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                Snackbar.make(publishedDateFieldLayout, "Error saving game. Please try again", Snackbar.LENGTH_LONG).show();
-            }
-        });
-    }
+//    public static void addScore(Integer gameId, Integer userId, Integer score, String imageUrl) {
+//        Call<ResponseBody> call = MainActivity.SERVICE.addScore(gameId, userId, score, imageUrl);
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                if(response.isSuccessful()) {
+//                    //TODO:something
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+////                Snackbar.make(publishedDateFieldLayout, "Error saving game. Please try again", Snackbar.LENGTH_LONG).show();
+//            }
+//        });
+//    }
 //    private static ArrayList<Score> getDummyScoreList() {
 //        Score ob1 = new Score(0, 10.0f, "1", "user1", "fakeurl");
 //        Score ob2 = new Score(1, 100.0f, "2", "user2", "fakeurl");

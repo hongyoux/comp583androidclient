@@ -4,14 +4,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import comp680team7.com.clienthighscore.MainActivity;
 import comp680team7.com.clienthighscore.OnListItemSelectedListener;
 import comp680team7.com.clienthighscore.R;
 import comp680team7.com.clienthighscore.models.Score;
+import comp680team7.com.clienthighscore.models.User;
 
 /**
  * Created by greatkiller on 3/11/2018.
@@ -45,8 +50,18 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
     public void onBindViewHolder(ScoreListAdapter.ScoreViewHolder holder, int position) {
         Score score = scores.get(position);
 
-        holder.userName.setText(String.valueOf(score.getUserId()));
+        User user = MainActivity.CACHE_USERS.get(score.getUserId());
+        if(user != null) {
+            holder.userName.setText(user.getUserName());
+        } else {
+            holder.userName.setText("No Username");
+        }
+
         holder.score.setText(String.valueOf(score.getScore()));
+        if(score.getImageUrl().contains("localhost")) {
+            score.setImageUrl(score.getImageUrl().replace("localhost", "10.0.2.2"));
+        }
+        Glide.with(holder.score.getContext()).load(score.getImageUrl()).into(holder.scoreView);
     }
 
     @Override
@@ -57,6 +72,7 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
     public class ScoreViewHolder extends RecyclerView.ViewHolder {
         public TextView userName;
         public TextView score;
+        public ImageView scoreView;
 
         public ScoreViewHolder(View itemView) {
             super(itemView);
@@ -68,6 +84,7 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
             });
             userName = itemView.findViewById(R.id.userName);
             score = itemView.findViewById(R.id.score);
+            scoreView = itemView.findViewById(R.id.scoreImage);
         }
     }
 }

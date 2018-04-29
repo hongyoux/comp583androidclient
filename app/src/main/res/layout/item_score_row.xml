@@ -1,22 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="10dp">
 
+    <ImageView
+        android:id="@+id/scoreImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop" />
+
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/scoreLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp" />
+        android:text="Score: "
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/scoreImage" />
 
     <TextView
         android:id="@+id/score"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/userName"
-        app:layout_constraintStart_toStartOf="@id/userName"/>
+        android:layout_marginLeft="4dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/scoreLabel"
+        />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/scoreLabel"
+        app:layout_constraintTop_toBottomOf="@id/scoreLabel" />
 
 </android.support.constraint.ConstraintLayout>
