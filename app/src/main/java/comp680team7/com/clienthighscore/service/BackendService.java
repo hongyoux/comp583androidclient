@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import comp680team7.com.clienthighscore.models.Game;
 import comp680team7.com.clienthighscore.models.Score;
+import comp680team7.com.clienthighscore.models.User;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -17,7 +18,7 @@ import retrofit2.http.Query;
 
 public interface BackendService {
     @POST("/auth")
-    Call<ResponseBody> authenticate(@Header("google_id_token") String idToken);
+    Call<User> authenticate(@Header("google_id_token") String idToken);
 
     @Multipart
     @POST("/uploadImage")

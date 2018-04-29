@@ -13,7 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import okhttp3.ResponseBody
+import comp680team7.com.clienthighscore.models.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,6 +25,16 @@ class GoogleSignInActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_sign_in)
+
+        val lastSignedInAccount = GoogleSignIn.getLastSignedInAccount(this)
+        if(lastSignedInAccount != null) {
+            lastSignedInAccount.idToken?.let {
+                authenticateWithBackend(it)
+            }
+            updateUI(lastSignedInAccount)
+            finish()
+            return
+        }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -42,12 +52,6 @@ class GoogleSignInActivity : AppCompatActivity(), View.OnClickListener {
             val i = Intent(this@GoogleSignInActivity, MainActivity::class.java)
             startActivity(i)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        //        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        //        updateUI(account);
     }
 
     override fun onClick(view: View) {
@@ -73,22 +77,33 @@ class GoogleSignInActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun authenticateWithBackend(token : String) {
+        val attemptAuth = MainActivity.SERVICE.authenticate(token)
+        attemptAuth.enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>?, t: Throwable?) {
+                t?.printStackTrace()
+                println("FAILURE!!")
+            }
+
+            override fun onResponse(call: Call<User>?, response: Response<User>?) {
+                println("SUCCESS!!")
+                response?.let {
+                    if(response.isSuccessful) {
+                        MainActivity.CURRENT_ACTIVE_USER = response.body()
+                    }
+                }
+            }
+        })
+    }
+
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult<ApiException>(ApiException::class.java!!)
             val idToken = account.idToken
 
-            val attemptAuth = MainActivity.SERVICE.authenticate(idToken)
-            attemptAuth.enqueue(object : Callback<ResponseBody> {
-                override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-                    t?.printStackTrace()
-                    println("FAILURE!!")
-                }
-
-                override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
-                    println("SUCCESS!!")
-                }
-            })
+            idToken?.let {
+                authenticateWithBackend(idToken)
+            }
 
             updateUI(account)
         } catch (e: ApiException) {

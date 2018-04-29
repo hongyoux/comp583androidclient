@@ -35,7 +35,6 @@ import com.google.api.services.vision.v1.model.ImageContext;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -45,6 +44,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import comp680team7.com.clienthighscore.models.User;
 import comp680team7.com.clienthighscore.service.BackendService;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static Integer CAMERA_PERMISSION = 2000;
     public static Integer READ_EXTERNAL_STORAGE_PERMISSION = 2001;
+
+    public static User CURRENT_ACTIVE_USER;
 
     public static BackendService SERVICE;
     static {
