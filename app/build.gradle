@@ -40,7 +40,12 @@ dependencies {
     implementation 'com.google.api-client:google-api-client-android:1.20.0' exclude module: 'httpclient'
     implementation 'com.google.http-client:google-http-client-gson:1.20.0' exclude module: 'httpclient'
     implementation 'com.google.apis:google-api-services-vision:v1-rev371-1.23.0'
-    implementation 'com.google.android.gms:play-services-auth:11.8.0'
+    implementation 'com.google.android.gms:play-services-auth:15.0.0'
+    implementation 'com.google.android.gms:play-services-vision:15.0.0'
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation 'com.google.dagger:dagger:2.15'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
+    implementation 'com.github.jrvansuita:PickImage:2.1.7'
     testImplementation 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

@@ -16,7 +16,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import comp680team7.com.clienthighscore.GameCreateActivity;
-import comp680team7.com.clienthighscore.GameListAdapter;
+import comp680team7.com.clienthighscore.ScoreListActivity;
+import comp680team7.com.clienthighscore.adapters.GameListAdapter;
 import comp680team7.com.clienthighscore.MainActivity;
 import comp680team7.com.clienthighscore.OnListItemSelectedListener;
 import comp680team7.com.clienthighscore.R;
@@ -36,7 +37,7 @@ public class GameListFragment extends Fragment implements OnListItemSelectedList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_game_list, container, false);
+        View rootView = inflater.inflate(R.layout.activity_game_list, container, false);
 
         configureToolBar((Toolbar) rootView.findViewById(R.id.gameListToolbar));
 
@@ -90,7 +91,11 @@ public class GameListFragment extends Fragment implements OnListItemSelectedList
     }
 
     @Override
-    public void onGameSelected(int position) {
-        Snackbar.make(gameListView, "Selected " + getGameAdapter().getGameAt(position).getName(), Snackbar.LENGTH_LONG).show();
+    public void onItemSelected(int position) {
+//        Snackbar.make(gameListView, "Selected " + getGameAdapter().getGameAt(position).getName(), Snackbar.LENGTH_LONG).show();
+        Intent scoreListActivityIntent = new Intent(getActivity(), ScoreListActivity.class);
+        scoreListActivityIntent.putExtra(String.valueOf(R.string.score_list_game_id_arg),
+                getGameAdapter().getGameAt(position).getId());
+        startActivity(scoreListActivityIntent);
     }
 }
