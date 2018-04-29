@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">ClientHighScore</string>
     <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
-    <!--<string name="server_client_id">748827521810-jo9ad9o7brpjmhdb1h7movd6m865c3f5.apps.googleusercontent.com</string>-->
-    <string name="server_client_id">780384510375-31ga7gu7q14u9qo1o4cc4e859nfsms4r.apps.googleusercontent.com</string>
+    <string name="server_client_id">748827521810-jo9ad9o7brpjmhdb1h7movd6m865c3f5.apps.googleusercontent.com</string>
+    <!--<string name="server_client_id">780384510375-31ga7gu7q14u9qo1o4cc4e859nfsms4r.apps.googleusercontent.com</string>-->
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="game_list_fragment_title">Available games</string>
