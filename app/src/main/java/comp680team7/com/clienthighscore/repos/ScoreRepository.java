@@ -1,18 +1,11 @@
 package comp680team7.com.clienthighscore.repos;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 
 import java.util.ArrayList;
 
-import javax.inject.Singleton;
-
 import comp680team7.com.clienthighscore.MainActivity;
-import comp680team7.com.clienthighscore.models.Game;
 import comp680team7.com.clienthighscore.models.Score;
-import comp680team7.com.clienthighscore.service.BackendService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;

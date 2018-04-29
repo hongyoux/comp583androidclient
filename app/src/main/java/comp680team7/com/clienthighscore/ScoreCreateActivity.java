@@ -1,13 +1,13 @@
 package comp680team7.com.clienthighscore;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.Menu;
@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.google.android.gms.vision.Frame;
@@ -28,9 +27,6 @@ import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 import comp680team7.com.clienthighscore.viewmodels.ScoreViewModel;
 import okhttp3.ResponseBody;
@@ -61,6 +57,8 @@ public class ScoreCreateActivity extends AppCompatActivity implements IPickResul
         findViewById(R.id.selectImageButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AutoCompleteTextView score = findViewById(R.id.newScore);
+                score.clearListSelection();
                 PickImageDialog.build(new PickSetup()).show(ScoreCreateActivity.this);
             }
         });
@@ -128,9 +126,14 @@ public class ScoreCreateActivity extends AppCompatActivity implements IPickResul
             //getImageView().setImageURI(r.getUri());
 
             //If you want the Bitmap.
-            Bitmap imgBitmap = r.getBitmap();
-            imageView.setImageBitmap(imgBitmap);
-            startOCR(imgBitmap);
+//            Bitmap imgBitmap = r.getBitmap();
+//            imageView.setImageBitmap(imgBitmap);
+//            startOCR(imgBitmap);
+
+            //Changed to use actual bitmap as getBitmap returns a degraded thumbnail and will effect OCR
+            Bitmap bitmap = BitmapFactory.decodeFile(r.getPath());
+            imageView.setImageBitmap(bitmap);
+            startOCR(bitmap);
             //Image path
             //r.getPath();
         } else {
@@ -161,13 +164,21 @@ public class ScoreCreateActivity extends AppCompatActivity implements IPickResul
     private void updateScoreEdit(ArrayList<String> possibleScores) {
 
         ArrayList<String> newS = new ArrayList<>();
-        for(String s : possibleScores) {
-            String[] tmpS = s.split(" ");
-            newS.addAll(Arrays.asList(tmpS));
+        for (String s : possibleScores) {
+            String[] tmpS = s.split("[ \n]");
+            for (String token : tmpS) {
+                if (token.matches("[\\d,]*")) {
+                    newS.add(token);
+                }
+            }
         }
         AutoCompleteTextView score = findViewById(R.id.newScore);
         score.setThreshold(0);
         score.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.select_dialog_item, newS));
+        if(!newS.isEmpty()) {
+            score.setText(newS.get(0));
+            score.showDropDown();
+        }
     }
 }
