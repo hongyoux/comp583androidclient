@@ -28,6 +28,7 @@ import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -162,9 +163,7 @@ public class ScoreCreateActivity extends AppCompatActivity implements IPickResul
         ArrayList<String> newS = new ArrayList<>();
         for(String s : possibleScores) {
             String[] tmpS = s.split(" ");
-            for(String s2 : tmpS) {
-                newS.add(s2);
-            }
+            newS.addAll(Arrays.asList(tmpS));
         }
         AutoCompleteTextView score = findViewById(R.id.newScore);
         score.setThreshold(0);
