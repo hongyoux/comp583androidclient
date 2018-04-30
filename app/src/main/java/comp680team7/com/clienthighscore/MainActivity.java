@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     public static BackendService SERVICE;
     static {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://cloudsql-dot-comp680-highscore-backend.appspot.com:8080")
+                .baseUrl("https://cloudsql-dot-comp680-highscore-backend.appspot.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
