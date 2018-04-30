@@ -9,11 +9,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -28,9 +30,10 @@ public class GameCreateActivityTest {
     }
 
     @Test
-    public void addGameDetail() {
-        onView(withId(R.id.gameName))
-                .perform(typeText("Great"))
-                .check(matches(withText("Great")));
+    public void addingGameFailedValidation() {
+        onView(withId(R.id.save))
+                .perform(click());
+        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText("Fields cannot be left blank")))
+                .check(matches(isDisplayed()));
     }
 }

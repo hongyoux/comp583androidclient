@@ -105,6 +105,8 @@ public class GameCreateActivity extends AppCompatActivity {
                     Snackbar.make(publishedDateFieldLayout, "Error saving game. Please try again", Snackbar.LENGTH_LONG).show();
                 }
             });
+        } else {
+            Snackbar.make(publishedDateFieldLayout, "Fields cannot be left blank", Snackbar.LENGTH_LONG).show();
         }
 
     }
