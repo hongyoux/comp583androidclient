@@ -35,7 +35,6 @@ public class GameListActivity extends AppCompatActivity implements OnListItemSel
 
         final GameListAdapter adapter = new GameListAdapter(this);
         gameListView.setAdapter(adapter);
-        gameListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         gameListView.setLayoutManager(new LinearLayoutManager(this));
 
         findViewById(R.id.newGameFAB).setOnClickListener(new View.OnClickListener() {

@@ -8,25 +8,33 @@
     android:background="@color/colorPrimaryDark"
     tools:context="comp680team7.com.clienthighscore.GoogleSignInActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
     <android.widget.ImageView
         android:id="@+id/app_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/score_chest_logo" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"/>
 
     <Button
         android:id="@+id/goToMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:visibility="gone"
         android:text="Go To Picture Manager"
         android:layout_marginBottom="20dp"/>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
