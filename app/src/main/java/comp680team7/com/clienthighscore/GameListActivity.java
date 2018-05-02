@@ -81,7 +81,7 @@ public class GameListActivity extends AppCompatActivity implements OnListItemSel
     }
 
     @Override
-    public void onItemSelected(int position) {
+    public void onItemSelected(int position, View sourceView) {
 //         Snackbar.make(gameListView, "Selected " +
 //                 getGameAdapter().getGameAt(position).getName(), Snackbar.LENGTH_LONG).show();
         Intent scoreListActivityIntent = new Intent(this , ScoreListActivity.class);

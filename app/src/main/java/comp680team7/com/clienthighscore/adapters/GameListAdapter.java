@@ -56,12 +56,12 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
         public TextView gamePublisher;
         public TextView gameReleaseDate;
 
-        public GameViewHolder(View itemView) {
+        public GameViewHolder(final View itemView) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectionListener.onItemSelected(getAdapterPosition());
+                    selectionListener.onItemSelected(getAdapterPosition(), itemView);
                 }
             });
             gameTitle = itemView.findViewById(R.id.gameTitle);

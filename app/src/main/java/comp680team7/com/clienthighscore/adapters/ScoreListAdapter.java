@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -181,12 +182,19 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectionListener.onItemSelected(getAdapterPosition());
+                    selectionListener.onItemSelected(getAdapterPosition(), v);
                 }
             });
             userName = itemView.findViewById(R.id.userName);
             score = itemView.findViewById(R.id.score);
             scoreView = itemView.findViewById(R.id.scoreImage);
+            ImageButton shareButton = itemView.findViewById(R.id.shareButton);
+            shareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectionListener.onItemSelected(getAdapterPosition(), v);
+                }
+            });
         }
     }
 }

@@ -91,7 +91,7 @@ public class GameListFragment extends Fragment implements OnListItemSelectedList
     }
 
     @Override
-    public void onItemSelected(int position) {
+    public void onItemSelected(int position, View sourceView) {
 //        Snackbar.make(gameListView, "Selected " + getGameAdapter().getGameAt(position).getName(), Snackbar.LENGTH_LONG).show();
         Intent scoreListActivityIntent = new Intent(getActivity(), ScoreListActivity.class);
         scoreListActivityIntent.putExtra(String.valueOf(R.string.score_list_game_id_arg),

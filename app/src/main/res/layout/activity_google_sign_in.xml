@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context="comp680team7.com.clienthighscore.GoogleSignInActivity">
 
     <android.widget.ImageView

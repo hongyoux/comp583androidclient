@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -117,11 +116,23 @@ public class ScoreListActivity extends AppCompatActivity implements OnListItemSe
     }
 
     @Override
-    public void onItemSelected(int position) {
+    public void onItemSelected(int position, View sourceView) {
         Intent intent = new Intent();
-        intent.setAction(android.content.Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse(getScoreAdapter().getScoreAt(position).getImageUrl()), "image/*");
-        startActivity(intent);
-//        Snackbar.make(scoreListView, "Selected " + getScoreAdapter().getScoreAt(position).getUserId(), Snackbar.LENGTH_LONG).show();
+        Score theScore = getScoreAdapter().getScoreAt(position);
+
+        if (sourceView.getId() == R.id.shareButton) {
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT, "Check out this high score of " + theScore.getScore() +" on ScoreChest! "
+                            + " at " + theScore.getImageUrl());
+            intent.setType("text/plain");
+            startActivity(intent);
+        }
+        else {
+            intent.setAction(android.content.Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.parse(theScore.getImageUrl()), "image/*");
+            startActivity(intent);
+        }
+
+
     }
 }
