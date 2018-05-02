@@ -45,7 +45,15 @@
 
         <activity
             android:name=".ScoreListActivity"
-            android:label="List Scores" />
+            android:label="List Scores">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+
 
         <activity
             android:name=".ScoreCreateActivity"

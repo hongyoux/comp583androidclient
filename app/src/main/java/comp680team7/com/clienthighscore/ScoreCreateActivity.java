@@ -28,6 +28,7 @@ import com.vansuita.pickimage.listeners.IPickResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -218,6 +219,7 @@ public class ScoreCreateActivity extends AppCompatActivity implements IPickResul
                 }
             }
         }
+        Collections.sort(newS, Collections.reverseOrder());
         AutoCompleteTextView score = findViewById(R.id.newScore);
         score.setThreshold(0);
         score.setAdapter(new ArrayAdapter<>(this,
