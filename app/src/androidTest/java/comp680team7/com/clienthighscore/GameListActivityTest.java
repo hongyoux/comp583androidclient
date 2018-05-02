@@ -66,6 +66,13 @@ public class GameListActivityTest {
 
 
         RecyclerView gameListView = activityTestRule.getActivity().findViewById(R.id.gameListView);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         int itemCount = gameListView.getAdapter().getItemCount();
         onView(withId(R.id.gameListView)) //scroll to last added item; kind of bad, but it works
                 .perform(RecyclerViewActions.scrollToPosition(itemCount-1));

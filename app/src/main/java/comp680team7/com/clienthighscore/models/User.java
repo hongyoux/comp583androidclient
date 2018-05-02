@@ -1,9 +1,16 @@
 package comp680team7.com.clienthighscore.models;
 
 public class User {
+
     private Integer id;
     private String userName;
     private String email;
+
+    public User(Integer id, String userName, String email) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+    }
 
     public Integer getId() {
         return id;

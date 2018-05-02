@@ -125,7 +125,8 @@ public class ScoreListActivity extends AppCompatActivity implements OnListItemSe
             intent.putExtra(Intent.EXTRA_TEXT, "Check out this high score of " + theScore.getScore() +" on ScoreChest! "
                             + " at " + theScore.getImageUrl());
             intent.setType("text/plain");
-            startActivity(intent);
+
+            startActivity(intent.createChooser(intent, "Share"));
         }
         else {
             intent.setAction(android.content.Intent.ACTION_VIEW);
