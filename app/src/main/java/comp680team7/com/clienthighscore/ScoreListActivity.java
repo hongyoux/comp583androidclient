@@ -46,7 +46,6 @@ public class ScoreListActivity extends AppCompatActivity implements OnListItemSe
 
         final ScoreListAdapter adapter = new ScoreListAdapter(this);
         scoreListView.setAdapter(adapter);
-        scoreListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         scoreListView.setLayoutManager(new LinearLayoutManager(this));
 
         viewModel.scoresListLiveData().observe(this, new Observer<List<Score>>() {

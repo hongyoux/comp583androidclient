@@ -1,8 +1,6 @@
 package comp680team7.com.clienthighscore.adapters;
 
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.util.SortedListAdapterCallback;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import comp680team7.com.clienthighscore.MainActivity;
@@ -29,9 +29,9 @@ import comp680team7.com.clienthighscore.models.User;
 public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.ScoreViewHolder>
         implements Filterable{
 
-    private SortedList<Score> scores;// = new ArrayList<>();
+    private List<Score> scores = new ArrayList<>();
 //    private SortedList<Score> filteredScores;
-    private List<Score> filteredScores;
+    private List<Score> filteredScores = new ArrayList<>();
 
     private OnListItemSelectedListener selectionListener;
 
@@ -40,51 +40,58 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
         this.selectionListener = selectionListener;
 
 
-        SortedList.Callback<Score> sortedListCallback = new SortedListAdapterCallback<Score>(this) {
-
-            @Override
-            public int compare(Score o1, Score o2) {
-                return -1 * o1.getScore().compareTo(o2.getScore());
-            }
-
-            @Override
-            public void onChanged(int position, int count) {
-                notifyItemRangeChanged(position, count);
-            }
-
-            @Override
-            public boolean areContentsTheSame(Score oldItem, Score newItem) {
-                return oldItem.getScore().equals(newItem.getScore());
-            }
-
-            @Override
-            public boolean areItemsTheSame(Score item1, Score item2) {
-                return item1.getScore().equals(item2.getScore());
-            }
-
-            @Override
-            public void onInserted(int position, int count) {
-                notifyItemRangeChanged(position, count);
-            }
-
-            @Override
-            public void onRemoved(int position, int count) {
-                notifyItemRangeRemoved(position, count);
-            }
-
-            @Override
-            public void onMoved(int fromPosition, int toPosition) {
-                notifyItemMoved(fromPosition, toPosition);
-            }
-        };
-        scores = new SortedList<Score>(Score.class, sortedListCallback);
+//        SortedList.Callback<Score> sortedListCallback = new SortedListAdapterCallback<Score>(this) {
+//
+//            @Override
+//            public int compare(Score o1, Score o2) {
+//                return -1 * o1.getScore().compareTo(o2.getScore());
+//            }
+//
+//            @Override
+//            public void onChanged(int position, int count) {
+//                notifyItemRangeChanged(position, count);
+//            }
+//
+//            @Override
+//            public boolean areContentsTheSame(Score oldItem, Score newItem) {
+//                return oldItem.getScore().equals(newItem.getScore());
+//            }
+//
+//            @Override
+//            public boolean areItemsTheSame(Score item1, Score item2) {
+//                return item1.getScore().equals(item2.getScore());
+//            }
+//
+//            @Override
+//            public void onInserted(int position, int count) {
+//                notifyItemRangeChanged(position, count);
+//            }
+//
+//            @Override
+//            public void onRemoved(int position, int count) {
+//                notifyItemRangeRemoved(position, count);
+//            }
+//
+//            @Override
+//            public void onMoved(int fromPosition, int toPosition) {
+//                notifyItemMoved(fromPosition, toPosition);
+//            }
+//        };
+//        scores = new SortedList<Score>(Score.class, sortedListCallback);
 //        filteredScores = new SortedList<Score>(Score.class, sortedListCallback);
-        filteredScores = new ArrayList<>();
     }
 
     public void addScores(List<Score> scores) {
         this.scores.clear();
+        this.filteredScores.clear();
         this.scores.addAll(scores);
+        Collections.sort(this.scores, new Comparator<Score>() {
+            @Override
+            public int compare(Score o1, Score o2) {
+                return o2.getScore().compareTo(o1.getScore());
+            }
+        });
+        this.filteredScores.addAll(scores);
         notifyDataSetChanged();
     }
 
@@ -101,12 +108,7 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
     @Override
     public void onBindViewHolder(ScoreListAdapter.ScoreViewHolder holder, int position) {
         Score score;
-        if (!filteredScores.isEmpty()){
-            score = filteredScores.get(position);
-        }
-        else {
-            score = scores.get(position);
-        }
+        score = filteredScores.get(position);
         User user = MainActivity.CACHE_USERS.get(score.getUserId());
         if(user != null) {
             holder.userName.setText(user.getUserName());
@@ -123,7 +125,7 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
 
     @Override
     public int getItemCount() {
-        return scores.size();
+        return filteredScores.size();
     }
 
     @Override
@@ -131,10 +133,10 @@ public class ScoreListAdapter extends RecyclerView.Adapter<ScoreListAdapter.Scor
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
+                filteredScores.clear();
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
-//                    filteredScores = scores;
-//                    filteredScores.addAll(scores);
+                    filteredScores.addAll(scores);
                 } else {
 //                    SortedList<Score> filteredList = new SortedList<>(Score.class, sortedListCallback);
                     List<Score> filteredList = new ArrayList<>();
