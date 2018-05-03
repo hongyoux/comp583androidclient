@@ -102,8 +102,11 @@ public class ScoreCreateActivity extends AppCompatActivity implements IPickResul
     private String imageFilePath;
     private void processSaveClick() {
         if(fieldsValid()) {
-
-            createRequestAndUpload(new File(imageFilePath));
+            if(imageFilePath == null) {
+                createNewScore("");
+            } else {
+                createRequestAndUpload(new File(imageFilePath));
+            }
         }
 
     }
