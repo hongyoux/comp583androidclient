@@ -22,13 +22,13 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:id="@+id/newScoreFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:src="@android:drawable/ic_input_add"
-        app:layout_anchor="@id/scoreListView"
-        app:layout_anchorGravity="bottom|right|end" />
+        android:src="@mipmap/addbutton"
+        android:background="@android:color/transparent"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="40dp"/>
 
 </android.support.design.widget.CoordinatorLayout>
