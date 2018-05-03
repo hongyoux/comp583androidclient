@@ -55,7 +55,7 @@
 
         <activity
             android:name=".ScoreCreateActivity"
-            android:label="Create Game" />
+            android:label="Add Score" />
 
         <!--<provider-->
             <!--android:name="android.support.v4.content.FileProvider"-->
